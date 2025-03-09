@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .task-input {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            transition: background-color 0.3s;
+        }
+
+        .task-item .task-text.completed {
+            text-decoration: line-through;
+            background-color: #e0e0e0;
+
+        }
+
+        .add-task-button {
+            background-color: #A1A7FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+
+        }
+
+        .delete-button {
+            background-color: #ff4d4d;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background-color: #ff1a1a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Task Tracker</h1>
+        <div>
+            <input type="text" class="task-input" placeholder="Enter a new task">
+        </div>
+        <button class="add-task-button" onclick="addTaskFromButton()">Add Task</button>
+        <ul class="task-list"></ul>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskInput = document.querySelector('.task-input');
+            const taskList = document.querySelector('.task-list');
+
+            document.querySelector('.add-task-button').addEventListener('click', () => {
+                if (taskInput.value.trim() !== '') {
+                    addTask(taskInput.value.trim());
+                    taskInput.value = '';
+                }
+            });
+
+            taskInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && taskInput.value.trim() !== '') {
+                    addTask(taskInput.value.trim());
+                    taskInput.value = '';
+                }
+            });
+
+            function addTask(taskName) {
+                const taskItem = document.createElement('li');
+                taskItem.className = 'task-item';
+
+                const completeButton = document.createElement('button');
+                completeButton.innerHTML = '&#10003;';
+                completeButton.className = 'complete-button';
+
+                const taskText = document.createElement('span');
+                taskText.className = 'task-text';
+                taskText.textContent = taskName;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete-button';
+                deleteButton.textContent = 'Delete';
+
+                taskItem.appendChild(completeButton);
+                taskItem.appendChild(taskText);
+                taskItem.appendChild(deleteButton);
+                taskList.appendChild(taskItem);
+
+                completeButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    taskText.classList.toggle('completed');
+                });
+
+                deleteButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    taskList.removeChild(taskItem);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
